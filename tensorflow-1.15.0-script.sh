@@ -16,10 +16,6 @@ SOURCE_ROOT="$(pwd)"
 USER="$(whoami)"
 
 
-#PATCH_URL
-PATCH_URL="https://raw.githubusercontent.com/linux-on-ibm-z/scripts/master/Tensorflow/1.12.0/patch"
-
-
 FORCE="false"
 TESTS="false"
 LOG_FILE="${CURDIR}/logs/${PACKAGE_NAME}-${PACKAGE_VERSION}-$(date +"%F-%T").log"
@@ -88,11 +84,11 @@ function configureAndInstall() {
 	chmod -R +w .
 	
 	#Adding fixes and patches to the files
-	fileChanges
+	sed -i "130s/-classpath/-J-Xms1g -J-Xmx1g -classpath/" scripts/bootstrap/compile.sh
 	
 	
 	cd $SOURCE_ROOT/bazel
-	bash ./compile.sh 
+	env EXTRA_BAZEL_ARGS="--host_javabase=@local_jdk//:jdk" bash ./compile.sh
 	export PATH=$PATH:$SOURCE_ROOT/bazel/output/ 
 	echo $PATH
 	
