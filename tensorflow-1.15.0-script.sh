@@ -134,15 +134,6 @@ function configureAndInstall() {
 	printf -- "\n Installation of %s %s was sucessfull \n\n" $PACKAGE_NAME $PACKAGE_VERSION
 }
 
-function fileChanges(){
-
-	printf -- "\nDownloading patch for compile.sh . . . \n" 
-	curl  -o "patch_compile.diff" $PATCH_URL/patch_compile.diff 
-	printf -- "\nApplying patch to compile.sh . . . \n"  
-	patch $SOURCE_ROOT/bazel/scripts/bootstrap/compile.sh patch_compile.diff 
-	rm -rf patch_compile.diff
-
-}
 
 function runTest() {
 	set +e
